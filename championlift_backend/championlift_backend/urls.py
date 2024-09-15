@@ -19,5 +19,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('competition_lifting.urls')),  # Incluye las URLs de tu app
+    path('', include('competition_lifting.urls')),  # Incluye las URLs de tu app
 ]
