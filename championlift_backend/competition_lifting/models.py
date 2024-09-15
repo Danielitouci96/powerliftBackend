@@ -4,16 +4,21 @@ class Competitor(models.Model):
     name = models.CharField(max_length=255)
     age = models.IntegerField()
     weight = models.FloatField()
-    heigth = models.FloatField()
+    height = models.FloatField()
     weight_class = models.CharField(max_length=50)
-    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)  # Nuevo campo
-
-    class Meta:
-        verbose_name = "Competitor"
-        verbose_name_plural = "Competitors"
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    latest_lift = models.OneToOneField('Lift', on_delete=models.SET_NULL, null=True, related_name='latest_for')
 
     def __str__(self):
         return self.name
+
+class Lift(models.Model):
+    name = models.CharField(max_length=100)
+    weight = models.FloatField()
+    competitor = models.ForeignKey(Competitor, on_delete=models.CASCADE, related_name='lift_history')
+
+    def __str__(self):
+        return f"{self.name} - {self.weight}kg"
 
 
 class Competition(models.Model):

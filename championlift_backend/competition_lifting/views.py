@@ -13,5 +13,5 @@ class CompetitorList(generics.ListCreateAPIView):
     serializer_class = CompetitorSerializer
 
 class CompetitorDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Competitor.objects.all()
+    queryset = Competitor.objects.prefetch_related('lift_history')
     serializer_class = CompetitorSerializer
