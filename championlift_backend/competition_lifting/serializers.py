@@ -6,7 +6,7 @@ from .models import Competitor, Lift, Modality
 class LiftSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lift
-        fields = ['id', 'name', 'weight', 'competitor']  # Asegúrate de incluir 'competitor'
+        fields = ['id', 'name', 'weight', 'competitor', 'valid']  # Asegúrate de incluir 'competitor'
 
 class CompetitorSerializer(serializers.ModelSerializer):
     lift_history = LiftSerializer(many=True, read_only=True)

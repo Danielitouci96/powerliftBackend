@@ -13,8 +13,14 @@ class Competitor(models.Model):
         return self.name
 
 class Lift(models.Model):
+    VALIDATION_CHOICES = [
+        ('valid', 'Válido'),
+        ('invalid', 'No Válido'),
+        ('not_performed', 'No Realizado'),
+    ]
     name = models.CharField(max_length=100)
     weight = models.FloatField()
+    valid = models.CharField(max_length=15, choices=VALIDATION_CHOICES, default='not_performed')  # Nuevo campo para indicar el estado del levantamiento
     competitor = models.ForeignKey(Competitor, on_delete=models.CASCADE, related_name='lift_history')
 
     def __str__(self):
