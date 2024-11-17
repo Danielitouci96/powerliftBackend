@@ -45,3 +45,14 @@ class LiftDelete(generics.DestroyAPIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Lift.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        
+class LiftDetail(generics.RetrieveUpdateAPIView):
+    queryset = Lift.objects.all()
+    serializer_class = LiftSerializer
+
+    def update(self, request, *args, **kwargs):
+        lift = self.get_object()
+        serializer = self.get_serializer(lift, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
