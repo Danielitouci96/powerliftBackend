@@ -4,6 +4,7 @@ from rest_framework import generics
 from .models import Competitor, Lift, Modality
 from .serializers import CompetitorSerializer, LiftSerializer, ModalitySerializer
 from rest_framework.response import Response
+from rest_framework import status
 
 from rest_framework import generics
 from .models import Competitor
@@ -38,13 +39,10 @@ class LiftDelete(generics.DestroyAPIView):
     queryset = Lift.objects.all()
     serializer_class = LiftSerializer
 
-    def delete(self, request, *args, **kwargs):
-        try:
-            lift = self.get_object()
-            lift.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Lift.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT, data={ 'message': 'Deleted successfully'})
         
 class LiftDetail(generics.RetrieveUpdateAPIView):
     queryset = Lift.objects.all()
