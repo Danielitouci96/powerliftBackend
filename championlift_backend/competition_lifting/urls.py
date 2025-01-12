@@ -1,12 +1,17 @@
 # competition_powerlift/urls.py
 
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CompetitorDetail, CompetitorList, LiftCreate, LiftDetail, ModalityList, LiftDelete
+from .views import CompetitorDetail, CompetitorList, LiftCreate, LiftDetail, ModalityList, LiftDelete, UserList
+
+router = DefaultRouter()
+router.register(r'users', UserList, basename='user')
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('competitors/', CompetitorList.as_view(), name='competitor-list'),  # Para listar y crear competidores
     path('competitors/<int:pk>/', CompetitorDetail.as_view(), name='competitor-detail'),  # Para obtener, actualizar y eliminar un competidor
     path('modalities/', ModalityList.as_view(), name='modality-list'),  # Nueva URL para modalidades

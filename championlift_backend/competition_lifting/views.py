@@ -1,8 +1,8 @@
 # competition_powerlift/views.py
 
-from rest_framework import generics
-from .models import Competitor, Lift, Modality
-from .serializers import CompetitorSerializer, LiftSerializer, ModalitySerializer
+from rest_framework import generics, viewsets
+from .models import Competitor, Lift, Modality, UserStaff
+from .serializers import CompetitorSerializer, LiftSerializer, ModalitySerializer, UserSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -55,3 +55,7 @@ class LiftDetail(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+class UserList(viewsets.ModelViewSet):
+    queryset = UserStaff.objects.all()
+    serializer_class = UserSerializer

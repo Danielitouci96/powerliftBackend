@@ -1,7 +1,8 @@
 # competition_powerlift/serializers.py
 
 from rest_framework import serializers
-from .models import Competitor, Lift, Modality
+from .models import Competitor, Lift, Modality, UserStaff
+from django.contrib.auth.hashers import make_password
 
 class LiftSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +21,15 @@ class ModalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Modality
         fields = ['id', 'name']
+
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = UserStaff
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'password']
+
+    def create(self, validated_data):
+        # Encriptar la contraseña antes de guardar
+        validated_data['password'] = make_password(validated_data['password'])
+        return super().create(validated_data)
