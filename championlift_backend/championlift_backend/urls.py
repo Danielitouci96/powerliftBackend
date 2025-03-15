@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('competition_lifting.urls')),  # Incluye las URLs de tu app
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/workouts/', include('workouts.urls')),  # Asegúrate de incluir las URLs de workouts
 ]
