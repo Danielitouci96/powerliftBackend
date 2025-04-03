@@ -1,4 +1,5 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
 from .models import Exercise, WorkoutDay, WorkoutWeek, WeekDay
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -75,7 +76,18 @@ class WorkoutDaySerializer(serializers.ModelSerializer):
             workout_week=workout_week,
             exercise=exercise,
             day_of_week=day_of_week,
-            **validated_data
+            
         )
 
         return workout_day
+    
+    # def destroy(self, pk=None):
+    #     try:
+    #         usuario = self.queryset.get(pk=pk)  # self.get_object() también es una opción
+    #         usuario.delete()
+    #         return Response(status=status.HTTP_204_NO_CONTENT)  # Sin contenido, eliminación exitosa
+    #     except Usuario.DoesNotExist:
+    #         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    #     except Exception as e:
+    #         return Response({'error': f'Error al eliminar el usuario: {str(e)}'},
+    #                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)

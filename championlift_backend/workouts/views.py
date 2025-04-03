@@ -29,3 +29,5 @@ class WorkoutDayViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(workout_week__start_date=start_date)
 
         return queryset
+    
+    
