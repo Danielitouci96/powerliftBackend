@@ -9,6 +9,7 @@ class Competitor(models.Model):
     weight_class = models.CharField(max_length=50)
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     latest_lift = models.OneToOneField('Lift', on_delete=models.SET_NULL, null=True, related_name='latest_for')
+    ipf_points = models.FloatField(default=0.0)  # ← Campo nuevo
 
     def __str__(self):
         return self.name

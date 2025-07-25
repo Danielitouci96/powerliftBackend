@@ -15,7 +15,12 @@ class CompetitorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Competitor
-        fields = ['id', 'name', 'age', 'weight', 'height', 'weight_class', 'profile_image', 'lift_history', 'latest_lift']
+        fields = [
+            'id', 'name', 'age', 'weight', 'height',
+            'weight_class', 'profile_image', 'lift_history',
+            'latest_lift', 'ipf_points'  # ← Campo nuevo
+        ]
+
 
 class ModalitySerializer(serializers.ModelSerializer):
     class Meta:

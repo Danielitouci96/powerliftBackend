@@ -34,8 +34,6 @@ class LiftCreate(generics.CreateAPIView):
         except Competitor.DoesNotExist:
             raise serializer.ValidationError("Competitor not found")
 
-# Asegúrate de que esta vista esté incluida en tus URLs
-
 class LiftDelete(generics.DestroyAPIView):
     queryset = Lift.objects.all()
     serializer_class = LiftSerializer
