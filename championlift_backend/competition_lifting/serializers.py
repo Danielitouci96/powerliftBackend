@@ -18,7 +18,7 @@ class CompetitorSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'age', 'weight', 'height',
             'weight_class', 'profile_image', 'lift_history',
-            'latest_lift', 'ipf_points'  # ← Campo nuevo
+            'latest_lift', 'ipf_points', 'gender'
         ]
 
 

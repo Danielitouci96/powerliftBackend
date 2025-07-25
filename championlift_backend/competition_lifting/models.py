@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class Competitor(models.Model):
+    GENDER_CHOICES = (
+        ('male', 'Masculino'),
+        ('female', 'Femenino'),
+    )
     name = models.CharField(max_length=255)
     age = models.IntegerField()
     weight = models.FloatField()
@@ -10,6 +14,9 @@ class Competitor(models.Model):
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     latest_lift = models.OneToOneField('Lift', on_delete=models.SET_NULL, null=True, related_name='latest_for')
     ipf_points = models.FloatField(default=0.0)  # ← Campo nuevo
+    gender = models.CharField(
+        max_length=8, choices=GENDER_CHOICES, default='male'
+    )
 
     def __str__(self):
         return self.name

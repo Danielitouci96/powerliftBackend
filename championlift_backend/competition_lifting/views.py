@@ -1,6 +1,7 @@
 # competition_powerlift/views.py
 
 from rest_framework import generics, viewsets
+from rest_framework.views import APIView
 from .models import Competitor, Lift, Modality, UserStaff
 from .serializers import CompetitorSerializer, LiftSerializer, ModalitySerializer, UserSerializer
 from rest_framework.response import Response
@@ -10,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from .models import Competitor
 from .serializers import CompetitorSerializer
+from .utils import ipf_gl_points, get_best_lifts
 
 class CompetitorList(generics.ListCreateAPIView):
     queryset = Competitor.objects.all()
@@ -57,3 +59,30 @@ class LiftDetail(generics.RetrieveUpdateAPIView):
 class UserList(viewsets.ModelViewSet):
     queryset = UserStaff.objects.all()
     serializer_class = UserSerializer
+
+class CalculateIPFPoints(APIView):
+    """
+    Endpoint para calcular y actualizar los puntos IPF GL de un competidor
+    """
+    def post(self, request, pk):
+        try:
+            competitor = Competitor.objects.get(pk=pk)
+            lift_history = list(competitor.lift_history.all())
+            best = get_best_lifts(lift_history)
+
+            total_points = 0.0
+            # Suma de puntos calculados lift por lift
+            total_points += ipf_gl_points(best.get('squat', 0), competitor.weight, competitor.gender)
+            total_points += ipf_gl_points(best.get('bench', 0), competitor.weight, competitor.gender)
+            total_points += ipf_gl_points(best.get('deadlift', 0), competitor.weight, competitor.gender)
+
+            competitor.ipf_points = round(total_points, 3)
+            competitor.save()
+
+            return Response({
+                "ipf_points": competitor.ipf_points,
+                "best_lifts": best,
+                "competitor": CompetitorSerializer(competitor).data,
+            })
+        except Competitor.DoesNotExist:
+            return Response({"error": "Competitor not found"}, status=status.HTTP_404_NOT_FOUND)
