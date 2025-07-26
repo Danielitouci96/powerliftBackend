@@ -76,7 +76,7 @@ class CalculateIPFPoints(APIView):
             total_points += ipf_gl_points(best.get('bench', 0), competitor.weight, competitor.gender)
             total_points += ipf_gl_points(best.get('deadlift', 0), competitor.weight, competitor.gender)
 
-            competitor.ipf_points = round(total_points, 3)
+            competitor.ipf_points = round(total_points, 2)
             competitor.save()
 
             return Response({
